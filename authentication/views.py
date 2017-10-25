@@ -14,6 +14,7 @@ from django.shortcuts import HttpResponseRedirect
 from .models import Account
 from django.http import JsonResponse
 from django.shortcuts import Http404
+from django.utils.crypto import get_random_string
 
 class logout(APIView):
     permission_classes = (IsAuthenticated,)
@@ -60,6 +61,11 @@ class AuthRegister(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
+        if(request.data['faculty']=='False'):
+            request.data['faculty'] = get_random_string(length=6)
+            request.data['is_faculty'] = True
+        else:
+            request.data['is_faculty'] = False
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()

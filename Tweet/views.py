@@ -5,8 +5,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from .models import ToDoItem,ToDoList,Account
-from .serializers import *
+from .models import posts,comments
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
@@ -23,29 +22,48 @@ class home(APIView):
 
     @method_decorator(csrf_exempt)
     def get(self,request):
-        aka = ToDoList.objects.filter(user=request.user)
-        serializer = ToDoListSerializer(aka, many=True)
-        return JsonResponse(serializer.data, safe=False)
-        return redirect("/accounts/login/")
+        tem = Account.objects.filter(id=request.user.id).values('faculty','is_faculty')
+        aka = posts.objects.filter(user__faculty=tem[0]['faculty']).values('id','text','user__id','user__username')
+        for post in aka:
+            com=comments.objects.filter(post__id=post.id).values('id','text','user__id','user__username')
+            post['comm']=com
+        rsh = loader.get_template('newsfeed.html')
+        cont = {
+            'posts': aka,
+            'user':request.user.id,
+            'name':request.user.username,
+            'is_fac':tem[0]['is_faculty'],
+        }
+        return HttpResponse(rsh.render(cont, request))
 
-class listnew(APIView):
+class timeline(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
 
     @method_decorator(csrf_exempt)
-    def post(self,request):
-        if request.is_ajax():
-            if not request.data._mutable:
-                request.data._mutable = True
-            #request.data.update({'user':request.user})
-            request.data['user']=request.user.id
-            serializer = ToDoListSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, safe=False)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self,request,pk):
+        if(pk==request.user.id):
+            sel=True
         else:
-            return redirect("/accounts/login/")
+            sel=False
+        tem = Account.objects.filter(id=request.user.id).values('is_faculty')
+        temw=Account.objects.filter(id=pk).values('username','is_faculty')
+        aka = posts.objects.filter(comments__user__id=pk).values('id','text','user__id','user__username')
+        for post in aka:
+            com=comments.objects.filter(post__id=post.id).values('id','text','user__id','user__username')
+            post['comm']=com
+        rsh = loader.get_template('newsfeed.html')
+        cont = {
+            'posts': aka,
+            'user': request.user.id,
+            'name': request.user.username,
+            'tuser':pk,
+            'tname':temw[0]['name'],
+            'tis_fac': temw[0]['is_faculty'],
+            'is_fac': tem[0]['is_faculty'],
+            'sele':sel,
+        }
+        return HttpResponse(rsh.render(cont, request))
 
 
 class itemtodo(APIView):

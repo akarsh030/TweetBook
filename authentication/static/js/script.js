@@ -210,7 +210,7 @@ $("document").ready(function () {
                         $('#login').modal('toggle')
                         // $("#myNavbar").empty()
                         // $("#myNavbar").append('<ul class="nav navbar-nav navbar-right"><li><a href="#" id="userpr"><i class="fa fa-user-circle-o color-green" aria-hidden="true"></i> Welcome ' + data.username + ' !</a></li><li><a href="#" id="logout"><i class="fa fa-sign-out color-green" aria-hidden="true"></i> Logout</a></li></ul>')
-                        newsfeed()
+                        window.location='/tweet/home/';
                         // $(".text-dec").empty()
                         // $(".text-dec").append("Welcome to ToDo")
                     },
@@ -240,7 +240,7 @@ $("document").ready(function () {
             data: JSON.stringify(credentials),
             success: function (auth) {
                 // $('#register').modal('toggle')
-                $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Congratulations!</strong> You have successfully Registered. Please Login to Continue.</div></div></div>')
+                $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Congratulations!</strong> You have successfully Registered. Please Login to Continue.'+auth.faculty+'</div></div></div>')
                 $("#regsucc").modal('show')
             },
             error: function (errors) {

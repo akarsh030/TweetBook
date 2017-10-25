@@ -20,6 +20,7 @@ class AccountManager(BaseUserManager):
             firstname=kwargs.get('firstname', None),
             lastname=kwargs.get('lastname', None),
             faculty=kwargs.get('faculty'),
+            is_faculty=kwargs.get('is_faculty'),
             phone=kwargs.get('phone'),
         )
         account.set_password(password)
@@ -40,7 +41,8 @@ class Account(AbstractBaseUser):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
-    faculty = models.BooleanField(default=False)
+    faculty = models.CharField(max_length=6)
+    is_faculty=models.BooleanField(default=False)
     phone= models.IntegerField(default=0)
     objects = AccountManager()
     USERNAME_FIELD = 'email'

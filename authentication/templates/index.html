@@ -17,6 +17,15 @@
 	<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,300italic,400italic,500,500italic,600,600italic,700'
 	 rel='stylesheet' type='text/css'>
 	<!--Favicon-->
+	<script type="text/javascript">
+		function showfield(name) {
+			if (name == 'True'){
+			$( "#faculty" ).remove();
+			document.getElementById('div1').innerHTML = '<input type="text" class="form-control" id="faculty" placeholder="Enter Join Code">';
+			}
+			else document.getElementById('div1').innerHTML = '';
+		}
+	</script>
 	<link rel="shortcut icon" type="image/png" href="{% static 'images/fav.png' %}" />
 </head>
 
@@ -80,10 +89,12 @@
 							<input type="number" class="form-control" id="phone" placeholder="Enter Phone Number">
 						</fieldset>
 						<fieldset class="form-group">
-							<select id="faculty" class="form-control">
-								<option value="True">Faculty</option>
-								<option value="False">Student</option>
+							<select id="faculty" class="form-control" onchange="showfield(this.options[this.selectedIndex].value)">
+								<option selected="selected">Please select ...</option>
+								<option value="True">Student</option>
+								<option value="False">Faculty</option>
 							</select>
+							<div id="div1"></div>
 						</fieldset>
 						<fieldset class="form-group">
 							<input type="password" class="form-control" id="pass" placeholder="Enter a Password">
@@ -96,7 +107,7 @@
 						</fieldset>
 					</form>
 				</div>
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Already have an account?</button>
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#login">Already have an account?</button>
 				<img class="form-shadow" src="{% static 'images/bottom-shadow.png' %}" alt="" />
 			</div>
 			<!-- Sign Up Form End -->

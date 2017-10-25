@@ -19,5 +19,5 @@ from Tweet import views
 urlpatterns = [
     url(r'^home/$', views.home.as_view()),
     url(r'^timeline/(?P<pk>[0-9]+)$', views.timeline.as_view()),
-    url(r'^timeline/editprof/$', views.editprof.as_view()),
+    # url(r'^timeline/editprof/$', views.editprof.as_view()),
 ]
