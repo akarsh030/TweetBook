@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />{% load static %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="index, follow" />
+	<title>TweetBook | A Complete Student Teacher Network</title>
+
+	<!-- Stylesheets
+    ================================================= -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/ionicons.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<!--Google Webfont-->
+	<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,300italic,400italic,500,500italic,600,600italic,700'
+	 rel='stylesheet' type='text/css'>
+	<!--Favicon-->
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/fav.png' %}" />
+</head>
+
+<body>
+
+	<!-- Header
+    ================================================= -->
+	<header id="header" class="lazy-load">
+		<nav class="navbar navbar-default navbar-fixed-top menu">
+			<div class="container">
+
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					 aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/tweet/home/">
+						<img src="{% static 'images/logo.png' %}" alt="logo" />
+					</a>
+				</div>
+			</div>
+			<!-- /.container -->
+		</nav>
+	</header>
+	<!--Header End-->
+
+	<!-- Top Banner
+    ================================================= -->
+	<section id="banner">
+		<div class="container">
+
+			<!-- Sign Up Form
+        ================================================= -->
+			<div class="sign-up-form">
+				<a href="/tweet/home/" class="logo">
+					<img src="{% static 'images/logo.png' %}" alt="Friend Finder" />
+				</a>
+				<h2 id="reg-body" class="text-white"> </h2>
+				<div class="line-divider"></div>
+				<div class="form-wrapper">
+					<p class="signup-text">Signup now and meet get connected with your teachers and friends</p>
+					<form id="registerForm" action="#">
+
+						<fieldset class="form-group">
+							<input type="email" class="form-control" id="emailid" placeholder="Enter E-mail">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="text" class="form-control" id="uname" placeholder="Enter User Name">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="text" class="form-control" id="fname" placeholder="Enter First Name">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="text" class="form-control" id="lname" placeholder="Enter Last Name">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="number" class="form-control" id="phone" placeholder="Enter Phone Number">
+						</fieldset>
+						<fieldset class="form-group">
+							<select id="faculty" class="form-control">
+								<option value="True">Faculty</option>
+								<option value="False">Student</option>
+							</select>
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="password" class="form-control" id="pass" placeholder="Enter a Password">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="password" class="form-control" id="cfmpass" placeholder="Re-enter a Password">
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="submit" value="Sign Up" class="btn-secondary form-control">
+						</fieldset>
+					</form>
+				</div>
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Already have an account?</button>
+				<img class="form-shadow" src="{% static 'images/bottom-shadow.png' %}" alt="" />
+			</div>
+			<!-- Sign Up Form End -->
+			<!-- Modal -->
+			<div class="modal fade" id="login" role="dialog">
+				<div class="modal-dialog modal-sm">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="sign-up-form">
+							<a href="/tweet/home/" class="logo">
+								<img src="{% static 'images/logo.png' %}" alt="Friend Finder" />
+							</a>
+							<h2 id="log-body" class="text-white"> </h2>
+							<div class="line-divider"></div>
+							<div class="form-wrapper">
+								<p class="signup-text">Sign In</p>
+								<form id="loginForm" action="#">
+									<fieldset class="form-group">
+										<input type="email" class="form-control" id="loginid" placeholder="Enter email">
+									</fieldset>
+									<fieldset class="form-group">
+										<input type="password" class="form-control" id="loginpsw" placeholder="Enter a password">
+									</fieldset>
+									<fieldset class="form-group">
+										<input type="submit" value="Sign In" class="btn-secondary form-control">
+									</fieldset>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<svg class="arrows hidden-xs hidden-sm">
+				<path class="a1" d="M0 0 L30 32 L60 0"></path>
+				<path class="a2" d="M0 20 L30 52 L60 20"></path>
+				<path class="a3" d="M0 40 L30 72 L60 40"></path>
+			</svg>
+		</div>
+	</section>
+
+	<!-- Image Divider
+    ================================================= -->
+	<div class="img-divider hidden-sm hidden-xs"></div>
+
+	<!-- Footer
+    ================================================= -->
+	<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-wrapper">
+					<div class="col-md-6 col-sm-6">
+						<a href="">
+							<img src="{% static 'images/logo.png' %}" alt="" class="footer-logo" />
+						</a>
+						<ul class="list-inline social-icons">
+							<li>
+								<a href="#">
+									<i class="icon ion-social-facebook"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon ion-social-twitter"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon ion-social-googleplus"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon ion-social-pinterest"></i>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="icon ion-social-linkedin"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<h6>Contact Us</h6>
+						<ul class="contact">
+							<!-- <li><i class="icon ion-ios-telephone-outline"></i>+1 (234) 222 0754</li> -->
+							<li>
+								<i class="icon ion-ios-email-outline"></i>team7@tweetbook.com</li>
+							<li>
+								<i class="icon ion-ios-location-outline"></i>ANITS, Vizag</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
+			<p>Copyright @TweetBook-Team 2017. All Rights Reserved</p>
+		</div>
+	</footer>
+
+	<!--preloader-->
+	<div id="spinner-wrapper">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Scripts
+    ================================================= -->
+	<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/jquery.appear.min.js' %}"></script>
+	<script src="{% static 'js/jquery.incremental-counter.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+
+</html>

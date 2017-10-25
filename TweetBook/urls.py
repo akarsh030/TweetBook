@@ -21,5 +21,5 @@ from django.conf.urls import include
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('authentication.urls')),
-    # url(r'^home/', include('Tweet.urls')),
+    url(r'^home/', include('Tweet.urls')),
 ]

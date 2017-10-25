@@ -25,8 +25,8 @@ class logout(APIView):
         response.delete_cookie('user')
         return response
 
-# def akarsh(request):
-#     return render_to_response('loginf.html')
+def akarsh(request):
+    return render_to_response('index.html')
 
 from rest_framework.views import exception_handler
 

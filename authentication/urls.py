@@ -5,7 +5,7 @@ from . import views
 app_name='authentication'
 urlpatterns = [
     url(r'^auth-token/', obtain_jwt_token),
-    # url(r'^login/',views.akarsh),
+    url(r'^login/',views.akarsh),
     url(r'^restricted/$', views.RestrictedView.as_view()),
     url(r'^token-refresh/', refresh_jwt_token),
     url(r'^token-verify/', verify_jwt_token),
