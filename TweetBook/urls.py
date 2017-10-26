@@ -19,8 +19,10 @@ from authentication import views
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 
 urlpatterns = [
+    url(r'^$', views.rederr),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('authentication.urls')),
     url(r'^tweet/', include('Tweet.urls')),

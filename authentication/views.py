@@ -28,6 +28,9 @@ class logout(APIView):
 def akarsh(request):
     return render_to_response('index.html')
 
+def rederr(request):
+    return redirect('/accounts/login/')
+
 from rest_framework.views import exception_handler
 
 def custom_exception_handler(exc, context):

@@ -166,28 +166,6 @@ function initMap() {
   });
 }
 $("document").ready(function () {
-    function newsfeed() {
-        $.ajax({
-            type: "GET",
-            url: "/tweet/home/",
-            success: function (data) {
-                if (data.length == 0) {
-                    $('#row-main').empty()
-                    $('#row-main').append('<div class="alert alert-info">No Lists to display.</div>')
-                    $('#header-section').empty()
-                    $('#header-section').append('<h2>ToDo Lists</h2><hr class="bottom-line"><button id="listnew" class="btn btn-success btn-sm"><i class="fa fa-list fa-fw"></i> New List</button>')
-                }
-                else {
-                    $.get('/static/listsf.html', function (htm) {
-                        $('#row-main').empty()
-                        $('#header-section').empty()
-                        $('#header-section').append('<h2>ToDo Lists</h2><hr class="bottom-line"><button id="listnew" class="btn btn-success btn-sm"><i class="fa fa-list fa-fw"></i> New List</button>')
-                        $.tmpl(htm, data).appendTo("#row-main")
-                    });
-                }
-            },
-        });
-    }
     $("body").on('submit', '#loginForm', function (e) {
         e.preventDefault()
         var credentials = {}
