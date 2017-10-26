@@ -21,6 +21,7 @@ class AccountManager(BaseUserManager):
             lastname=kwargs.get('lastname', None),
             faculty=kwargs.get('faculty'),
             is_faculty=kwargs.get('is_faculty'),
+            dp=kwargs.get('dp'),
             phone=kwargs.get('phone'),
         )
         account.set_password(password)
@@ -43,6 +44,7 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     faculty = models.CharField(max_length=6)
     is_faculty=models.BooleanField(default=False)
+    dp = models.FileField(upload_to='dps/')
     phone= models.IntegerField(default=0)
     objects = AccountManager()
     USERNAME_FIELD = 'email'

@@ -104,13 +104,16 @@
                     <div class="col-md-9">
                         <form id="EditProfForm" action="#">
                             <fieldset class="form-group">
-                                <input type="text" class="form-control" id="fname" placeholder="Enter First Name" value="{{firstname}}">
+                                <input type="text" class="form-control" id="fname" placeholder="Enter First Name" value="{{user.firstname}}">
                             </fieldset>
                             <fieldset class="form-group">
-                                <input type="text" class="form-control" id="lname" placeholder="Enter Last Name" value="{{lastname}}">
+                                <input type="text" class="form-control" id="lname" placeholder="Enter Last Name" value="{{user.lastname}}">
                             </fieldset>
                             <fieldset class="form-group">
-                                <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" value="{{phone}}">
+                                <input type="text" class="form-control" id="faculty" value="{{user.faculty}}">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" value="{{user.phone}}">
                             </fieldset>
                             <fieldset class="form-group">
                                 <input type="password" class="form-control" id="pass" placeholder="Enter a Password">

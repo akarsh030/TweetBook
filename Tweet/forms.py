@@ -5,9 +5,9 @@ from .models import *
 class postsForm(ModelForm):
     class Meta:
         model=posts
-        fields=['text']
+        fields=['text','user']
 
 class commsForm(ModelForm):
     class Meta:
         model=comments
-        fields=['text']
+        fields=['text','user','post']

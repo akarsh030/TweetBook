@@ -15,6 +15,7 @@ from .models import Account
 from django.http import JsonResponse
 from django.shortcuts import Http404
 from django.utils.crypto import get_random_string
+from django.core.files.storage import FileSystemStorage
 
 class logout(APIView):
     permission_classes = (IsAuthenticated,)
@@ -66,6 +67,7 @@ class AuthRegister(APIView):
             request.data['is_faculty'] = True
         else:
             request.data['is_faculty'] = False
+        request.data['dp']=request.FILES['dp']
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -82,14 +84,21 @@ class updateprofile(APIView):
         except Account.DoesNotExist:
             raise Http404
 
-    def get(self,request, pk):
-        if request.is_ajax():
-            aka = self.get_object(request,pk)
-            serializer = AccountSerializer(aka)
-            return JsonResponse(serializer.data,safe=False)
-        else:
-            return redirect("/accounts/login/")
-
+    def get(self,request):
+        aka = self.get_object(request,request.user.id)
+        rsh = loader.get_template('newsfeed.html')
+        cont = {
+            'posts': aka,
+            'user': request.user.id,
+            'name': request.user.username,
+            'tuser':pk,
+            'tname':temw[0]['name'],
+            'tis_fac': temw[0]['is_faculty'],
+            'is_fac': tem[0]['is_faculty'],
+            'sele':sel,
+        }
+        return HttpResponse(rsh.render(cont, request))
+    #
     def put(self, request, pk):
         if request.is_ajax():
             ala = self.get_object(request,pk)

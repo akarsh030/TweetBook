@@ -71,25 +71,25 @@
 				<div class="line-divider"></div>
 				<div class="form-wrapper">
 					<p class="signup-text">Signup now and meet get connected with your teachers and friends</p>
-					<form id="registerForm" action="#">
+					<form id="registerForm" method="post" enctype="multipart/form-data" >
 
 						<fieldset class="form-group">
-							<input type="email" class="form-control" id="emailid" placeholder="Enter E-mail">
+							<input name="email" type="email" class="form-control" id="emailid" placeholder="Enter E-mail" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="text" class="form-control" id="uname" placeholder="Enter User Name">
+							<input name="username" type="text" class="form-control" id="uname" placeholder="Enter User Name" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="text" class="form-control" id="fname" placeholder="Enter First Name">
+							<input name="firstname" type="text" class="form-control" id="fname" placeholder="Enter First Name" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="text" class="form-control" id="lname" placeholder="Enter Last Name">
+							<input name="lastname" type="text" class="form-control" id="lname" placeholder="Enter Last Name" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="number" class="form-control" id="phone" placeholder="Enter Phone Number">
+							<input name="phone" type="number" class="form-control" id="phone" placeholder="Enter Phone Number" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<select id="faculty" class="form-control" onchange="showfield(this.options[this.selectedIndex].value)">
+							<select name="faculty" id="faculty" class="form-control" onchange="showfield(this.options[this.selectedIndex].value)" required>
 								<option selected="selected">Please select ...</option>
 								<option value="True">Student</option>
 								<option value="False">Faculty</option>
@@ -97,12 +97,16 @@
 							<div id="div1"></div>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="password" class="form-control" id="pass" placeholder="Enter a Password">
+							<input name="password" type="password" class="form-control" id="pass" placeholder="Enter a Password" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input type="password" class="form-control" id="cfmpass" placeholder="Re-enter a Password">
+							<input name="confirm_password" type="password" class="form-control" id="cfmpass" placeholder="Re-enter a Password" required>
 						</fieldset>
 						<fieldset class="form-group">
+							<input name="dp" type="file" class="form-control" id="profileimg" required>
+						</fieldset>
+						<fieldset class="form-group">
+							{% comment %} <button class="btn-secondary form-control">Sign Up</button> {% endcomment %}
 							<input type="submit" value="Sign Up" class="btn-secondary form-control">
 						</fieldset>
 					</form>
@@ -198,7 +202,7 @@
 						<ul class="contact">
 							<!-- <li><i class="icon ion-ios-telephone-outline"></i>+1 (234) 222 0754</li> -->
 							<li>
-								<i class="icon ion-ios-email-outline"></i>team7@tweetbook.com</li>
+								<i class="icon ion-ios-email-outline"></i>team1@tweetbook.com</li>
 							<li>
 								<i class="icon ion-ios-location-outline"></i>ANITS, Vizag</li>
 						</ul>

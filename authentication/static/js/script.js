@@ -223,21 +223,24 @@ $("document").ready(function () {
             contentType: "application/json",
         });
     });
-    $("body").on('submit', '#registerForm', function (e) {
-        e.preventDefault()
-        var credentials = {}
-        credentials['email'] = $("#emailid").val()
-        credentials['username'] = $("#uname").val()
-        credentials['firstname'] = $("#fname").val()
-        credentials['lastname'] = $("#lname").val()
-        credentials['phone'] = $("#phone").val()
-        credentials['faculty'] = $("#faculty").val()
-        credentials['password'] = $("#pass").val()
-        credentials['confirm_password'] = $("#cfmpass").val()
+    $("form#registerForm").submit(function (e) {
+        e.preventDefault();
+        // var credentials = {}
+        // credentials['email'] = $("#emailid").val()
+        // credentials['username'] = $("#uname").val()
+        // credentials['firstname'] = $("#fname").val()
+        // credentials['lastname'] = $("#lname").val()
+        // credentials['phone'] = $("#phone").val()
+        // credentials['faculty'] = $("#faculty").val()
+        // credentials['password'] = $("#pass").val()
+        // credentials['dp'] = $('#profileimg').prop('files')[0];
+        // credentials['confirm_password'] = $("#cfmpass").val()
+        var aka=new FormData(this);
         $.ajax({
             type: "POST",
             url: "/accounts/register/",
-            data: JSON.stringify(credentials),
+            data: aka, //JSON.stringify(credentials),
+            async: false,
             success: function (auth) {
                 // $('#register').modal('toggle')
                 $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Congratulations!</strong> You have successfully Registered. Please Login to Continue.'+auth.faculty+'</div></div></div>')
@@ -246,8 +249,10 @@ $("document").ready(function () {
             error: function (errors) {
                 $("#reg-body").prepend('<div class="alert alert-error alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Error!</strong> Already exists.</div>')
             },
-            dataType: "json",
-            contentType: "application/json",
+            cache: false,
+            contentType: false,
+            processData: false
         });
+        return false;
     });
 });
