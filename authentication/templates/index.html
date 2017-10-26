@@ -21,9 +21,8 @@
 		function showfield(name) {
 			if (name == 'True'){
 			$( "#faculty" ).remove();
-			document.getElementById('div1').innerHTML = '<input type="text" class="form-control" id="faculty" placeholder="Enter Join Code">';
+			$('#asas').prepend('<input type="text" class="form-control" id="faculty" placeholder="Enter Join Code">');
 			}
-			else document.getElementById('div1').innerHTML = '';
 		}
 	</script>
 	<link rel="shortcut icon" type="image/png" href="{% static 'images/fav.png' %}" />
@@ -88,13 +87,12 @@
 						<fieldset class="form-group">
 							<input name="phone" type="number" class="form-control" id="phone" placeholder="Enter Phone Number" required>
 						</fieldset>
-						<fieldset class="form-group">
+						<fieldset id="asas" class="form-group">
 							<select name="faculty" id="faculty" class="form-control" onchange="showfield(this.options[this.selectedIndex].value)" required>
 								<option selected="selected">Please select ...</option>
 								<option value="True">Student</option>
 								<option value="False">Faculty</option>
 							</select>
-							<div id="div1"></div>
 						</fieldset>
 						<fieldset class="form-group">
 							<input name="password" type="password" class="form-control" id="pass" placeholder="Enter a Password" required>

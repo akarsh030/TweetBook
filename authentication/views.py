@@ -8,13 +8,11 @@ from rest_framework.permissions import AllowAny
 from .serializers import AccountSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from django.shortcuts import render_to_response
-from django.shortcuts import redirect
-from django.shortcuts import HttpResponseRedirect
 from .models import Account
 from django.http import JsonResponse
-from django.shortcuts import Http404
 from django.utils.crypto import get_random_string
+from django.template import loader
+from django.shortcuts import *
 from django.core.files.storage import FileSystemStorage
 
 class logout(APIView):
@@ -75,8 +73,9 @@ class AuthRegister(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class updateprofile(APIView):
+    permission_classes = (IsAuthenticated,AllowAny,)
+    authentication_classes = (JSONWebTokenAuthentication,)
     serializer_class = AccountSerializer
-    permission_classes = (AllowAny,)
 
     def get_object(self,request, pk):
         try:
@@ -86,29 +85,24 @@ class updateprofile(APIView):
 
     def get(self,request):
         aka = self.get_object(request,request.user.id)
-        rsh = loader.get_template('newsfeed.html')
+        rsh = loader.get_template('edit.html')
         cont = {
-            'posts': aka,
-            'user': request.user.id,
-            'name': request.user.username,
-            'tuser':pk,
-            'tname':temw[0]['name'],
-            'tis_fac': temw[0]['is_faculty'],
-            'is_fac': tem[0]['is_faculty'],
-            'sele':sel,
+            'user': aka,
         }
         return HttpResponse(rsh.render(cont, request))
-    #
-    def put(self, request, pk):
-        if request.is_ajax():
-            ala = self.get_object(request,pk)
-            serializer = AccountSerializer(ala, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, safe=False)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
+
+    def put(self, request):
+        ala = self.get_object(request,request.user.id)
+        # request.POST['email']=ala[0]['email']
+        # request.POST['dp'] = ala[0]['dp']
+        # request.POST['password'] = ala[0]['password']
+        # request.POST['confirm_password'] = ala[0]['confirm_password']
+        print (request.data)
+        serializer = AccountSerializer(ala, data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def red(request):
     return redirect('/accounts/login/')

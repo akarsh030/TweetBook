@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^token-verify/', verify_jwt_token),
     url(r'^register/$', views.AuthRegister.as_view()),
     url(r'^logout/$',views.logout.as_view(),name='logout'),
-    url(r'^profile/(?P<pk>[0-9]+)/$', views.updateprofile.as_view()),
+    url(r'^profile/$', views.updateprofile.as_view()),
 ]

@@ -56,7 +56,7 @@
             </li>
             {% endif %}
             <li class="dropdown">
-              <a href="/tweet/timeline/editprof/">Edit Profile</a>
+              <a href="/accounts/profile/">Edit Profile</a>
             </li>
             <li class="dropdown">
               <a href="/accounts/logout/">Log Out</a>
@@ -107,7 +107,7 @@
             <li>
               <i class="icon ion-ios-list"></i>
               <div>
-                <a href="/tweet/timeline/editprof/">Edit Profile</a>
+                <a href="/accounts/profile/">Edit Profile</a>
               </div>
             </li>
           </ul>
@@ -118,11 +118,11 @@
           <!-- Post Create Box
             ================================================= -->
           <div class="create-post">
-            <form action="/tweet/post/" method="post">
+            <form action="/tweet/post/" method="post" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-7 col-sm-7">
                   <div class="form-group">
-                    <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-md" />
+                    <img src="/media/{{dp}}" alt="" class="profile-photo-md" />
                     <textarea name="text" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post"></textarea>
                   </div>
                 </div>
@@ -130,16 +130,17 @@
                   <div class="tools">
                     <ul class="publishing-tools list-inline">
                       <li>
-                        <a href="#">
+                        <a href="#" onclick="document.getElementById('image').click(); return false">
                           <i class="ion-images">
-                            <input type="file" class="ion-images">
                           </i>
                         </a>
+                        <input id="image" name="pmedia" type="file" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
                       </li>
                       <li>
-                        <a href="#">
+                        <a href="#" onclick="document.getElementById('video').click(); return false">
                           <i class="ion-ios-videocam"></i>
                         </a>
+                        <input id="video" type="file" name="pmedia" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
                       </li>
                     </ul>
                     <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish" />
@@ -154,13 +155,17 @@
             ================================================= -->
           {% for post in posts %}
           <div class="post-content">
-            <img src="{% static 'images/post-images/{{post.id}}.jpg' %}" alt="post-image" class="img-responsive post-image" />
+            {% if post.mtype == 'jpg' or post.mtype == 'jpeg' or post.mtype == 'png' or post.mtype == 'gif' %}
+            <img src="/media/{{post.pmedia}}" alt="post-image" class="img-responsive post-image" />
+            {% else %}
+            <video class="post-video" controls> <source src="/media/{{post.pmedia}}" type="video/mp4"> </video>
+            {% endif %}
             <div class="post-container">
-              <img src="{% static 'images/users/{{post.user__id}}.jpg' %}" alt="user" class="profile-photo-md pull-left" />
+              <img src="/media/{{post.user__dp}}" alt="user" class="profile-photo-md pull-left" />
               <div class="post-detail">
                 <div class="user-info">
                   <h5>
-                    <a href="/home/timeline/{{post.user__id}}/" class="profile-link">{{post.user__username}}</a>
+                    <a href="#" class="profile-link">{{post.user__username}}</a>
                   </h5>
                 </div>
                 <div class="line-divider"></div>
@@ -171,9 +176,13 @@
                 <div class="line-divider"></div>
                 {% for comm in post.comment %}
                 <div class="post-comment">
-                  <img src="{% static 'images/users/{{comm.user__id}}.jpg' %}" alt="" class="profile-photo-sm" />
+                  <img src="/media/{{comm.user__dp}}" alt="" class="profile-photo-sm" />
                   <p>
+                    {% if not is_fac %}          
                     <a href="/home/timeline/{{comm.user__id}}/" class="profile-link">{{comm.user__username}} </a>
+                    {% else %}
+                    <a href="#" class="profile-link">{{comm.user__username}} </a>
+                    {% endif %}
                     {{comm.text}}</p>
                 </div>
                 {% endfor %}

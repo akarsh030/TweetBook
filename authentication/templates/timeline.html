@@ -55,7 +55,7 @@
             </li>
             {% endif %}
             <li class="dropdown">
-              <a href="/tweet/timeline/editprof/">Edit Profile</a>
+              <a href="/accounts/profile/">Edit Profile</a>
             </li>
             <li class="dropdown">
               <a href="/accounts/logout/">Log Out</a>
@@ -81,7 +81,7 @@
           <div class="row">
             <div class="col-md-3">
               <div class="profile-info">
-                <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="img-responsive profile-photo" />
+                <img src="/media/{{dp}}" alt="" class="img-responsive profile-photo" />
                 <h3>{{tname}}</h3>
                 <p class="text-muted">{{tis_fac}}</p>
               </div>
@@ -115,26 +115,29 @@
                 <div class="row">
                   <div class="col-md-7 col-sm-7">
                     <div class="form-group">
-                      <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-md" />
-                      <textarea name="texts" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post"></textarea>
+                      <img src="/media/{{dp}}" alt="" class="profile-photo-md" />
+                      <textarea name="texts" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post" required></textarea>
                     </div>
                   </div>
                   <div class="col-md-5 col-sm-5">
-                    <div class="tools">
-                      <ul class="publishing-tools list-inline">
-                        <li>
-                          <a href="#">
-                            <i class="ion-images"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i class="ion-ios-videocam"></i>
-                          </a>
-                        </li>
-                      </ul>
-                      <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish"/>
-                    </div>
+                      <div class="tools">
+                          <ul class="publishing-tools list-inline">
+                            <li>
+                              <a href="#" onclick="document.getElementById('image').click(); return false">
+                                <i class="ion-images">
+                                </i>
+                              </a>
+                              <input id="image" name="pmedia" type="file" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
+                            </li>
+                            <li>
+                              <a href="#" onclick="document.getElementById('video').click(); return false">
+                                <i class="ion-ios-videocam"></i>
+                              </a>
+                              <input id="video" type="file" name="pmedia" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
+                            </li>
+                          </ul>
+                          <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish" />
+                        </div>
                   </div>
                 </div>
               </form>
@@ -153,9 +156,9 @@
               </div>
               <!--Post Date End-->
 
-              <img src="{% static 'images/post-images/{{post.id}}.jpg' %}" alt="post-image" class="img-responsive post-image" />
+              <img src="/media/{{post.pmedia}}" alt="post-image" class="img-responsive post-image" />
               <div class="post-container">
-                <img src="{% static 'images/users/{{post.user__id}}.jpg' %}" alt="user" class="profile-photo-md pull-left" />
+                <img src="/media/{{post.user__dp}}" alt="user" class="profile-photo-md pull-left" />
                 <div class="post-detail">
                   <div class="user-info">
                     <h5>

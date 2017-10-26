@@ -24,14 +24,15 @@ class home(APIView):
     @method_decorator(csrf_exempt)
     def get(self,request):
         tem = Account.objects.filter(id=request.user.id).values('faculty','is_faculty','dp')
-        aka = posts.objects.filter(user__faculty=tem[0]['faculty']).values('id','text','user__id','user__username')
+        aka = posts.objects.filter(user__faculty=tem[0]['faculty']).values('id','text','user__id','user__username','pmedia','user__dp')
         for post in aka:
             comms=comments.objects.filter(post__id=post['id'])
             if(comms!={}):
-                com=comms.values('id','text','user__id','user__username')
+                com=comms.values('id','text','user__id','user__username','user__dp')
                 post['comment']=com
             else:
                 post['comment'] = comms
+            post['mtype']=post['pmedia'].split('.')[-1].lower()
         rsh = loader.get_template('newsfeed.html')
         cont = {
             'posts': aka,
@@ -54,9 +55,9 @@ class timeline(APIView):
             sel=False
         tem = Account.objects.filter(id=request.user.id).values('is_faculty','dp')
         temw=Account.objects.filter(id=pk).values('username','is_faculty')
-        aka = posts.objects.filter(comments__user__id=pk).values('id','text','user__id','user__username')
+        aka = posts.objects.filter(comments__user__id=pk).values('id','text','user__id','user__username','pmedia','user__dp')
         for post in aka:
-            com=comments.objects.filter(post__id=post.id).values('id','text','user__id','user__username')
+            com=comments.objects.filter(post__id=post['id']).values('id','text','user__id','user__username','user__dp')
             post['comment']=com
         rsh = loader.get_template('newsfeed.html')
         print(tem[0]['dp'])
@@ -66,7 +67,7 @@ class timeline(APIView):
             'name': request.user.username,
             'dp': tem[0]['dp'],
             'tuser':pk,
-            'tname':temw[0]['name'],
+            'tname':temw[0]['username'],
             'tis_fac': temw[0]['is_faculty'],
             'is_fac': tem[0]['is_faculty'],
             'sele':sel,
@@ -79,10 +80,10 @@ class postview(APIView):
 
     @method_decorator(csrf_exempt)
     def post(self,request):
-        if not request.data._mutable:
-            request.data._mutable = True
+        if not request.POST._mutable:
+            request.POST._mutable = True
         request.POST['user']=request.user.id
-        ins=postsForm(request.POST)
+        ins=postsForm(request.POST,request.FILES)
         if ins.is_valid():
             ins.save()
             return redirect('/tweet/home/')

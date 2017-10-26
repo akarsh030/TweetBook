@@ -16,13 +16,9 @@ class AccountSerializer(serializers.ModelSerializer):
         return Account.objects.create_user(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.email = validated_data.get('email', instance.email)
-        instance.username = validated_data.get('username', instance.username)
         instance.firstname = validated_data.get('firstname', instance.firstname)
         instance.lastname = validated_data.get('lastname', instance.lastname)
         instance.faculty=validated_data.get('faculty', instance.faculty)
-        instance.is_faculty=validated_data.get('is_faculty', instance.is_faculty)
-        instance.dp = validated_data.get('phone', instance.dp)
         instance.phone = validated_data.get('phone', instance.phone)
         password = validated_data.get('password', None)
         confirm_password = validated_data.get('confirm_password', None)
@@ -35,7 +31,7 @@ class AccountSerializer(serializers.ModelSerializer):
         '''
         Ensure the passwords are the same
         '''
-        if data['password']:
+        if 'password' in data.keys():
             print "Here"
             if data['password'] != data['confirm_password']:
                 raise serializers.ValidationError(

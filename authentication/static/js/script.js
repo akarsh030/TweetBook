@@ -205,14 +205,8 @@ $("document").ready(function () {
                         xhr.setRequestHeader("Authorization", "JWT " + auth.token);
                     },
                     success: function (data) {
-                        // usid = data.id
-                        // setCookie("user", data.username + ',' + data.id, 300)
                         $('#login').modal('toggle')
-                        // $("#myNavbar").empty()
-                        // $("#myNavbar").append('<ul class="nav navbar-nav navbar-right"><li><a href="#" id="userpr"><i class="fa fa-user-circle-o color-green" aria-hidden="true"></i> Welcome ' + data.username + ' !</a></li><li><a href="#" id="logout"><i class="fa fa-sign-out color-green" aria-hidden="true"></i> Logout</a></li></ul>')
                         window.location='/tweet/home/';
-                        // $(".text-dec").empty()
-                        // $(".text-dec").append("Welcome to ToDo")
                     },
                 });
             },
@@ -223,36 +217,51 @@ $("document").ready(function () {
             contentType: "application/json",
         });
     });
-    $("form#registerForm").submit(function (e) {
+    $("body").on('submit','form#registerForm',function (e) {
         e.preventDefault();
-        // var credentials = {}
-        // credentials['email'] = $("#emailid").val()
-        // credentials['username'] = $("#uname").val()
-        // credentials['firstname'] = $("#fname").val()
-        // credentials['lastname'] = $("#lname").val()
-        // credentials['phone'] = $("#phone").val()
-        // credentials['faculty'] = $("#faculty").val()
-        // credentials['password'] = $("#pass").val()
-        // credentials['dp'] = $('#profileimg').prop('files')[0];
-        // credentials['confirm_password'] = $("#cfmpass").val()
         var aka=new FormData(this);
+        aka.append('faculty',$("#faculty").val());
         $.ajax({
             type: "POST",
             url: "/accounts/register/",
-            data: aka, //JSON.stringify(credentials),
+            data: aka,
             async: false,
             success: function (auth) {
-                // $('#register').modal('toggle')
                 $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Congratulations!</strong> You have successfully Registered. Please Login to Continue.'+auth.faculty+'</div></div></div>')
                 $("#regsucc").modal('show')
             },
             error: function (errors) {
-                $("#reg-body").prepend('<div class="alert alert-error alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Error!</strong> Already exists.</div>')
+                $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Error!</strong> Already exists.</div></div></div>')
+                $("#regsucc").modal('show')
             },
             cache: false,
             contentType: false,
             processData: false
         });
         return false;
+    });
+    $("body").on('submit','form#EditProfForm',function (e) {
+        e.preventDefault();
+        var aka=new FormData(this);
+        if(aka.get('password')==''){
+            aka.delete('password');
+            aka.delete('confirm_password');
+        }
+        $.ajax({
+            type: "PUT",
+            url: "/accounts/profile/",
+            data: aka,
+            async: false,
+            success: function (auth) {
+                window.location='/accounts/profile/';
+            },
+            error: function (errors) {
+                $("body").prepend('<div id="epsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Error!</strong> Cannot Update.</div></div></div>')
+                $("#epsucc").modal('show')
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
     });
 });
