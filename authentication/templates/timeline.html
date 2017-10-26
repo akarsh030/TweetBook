@@ -108,37 +108,39 @@
           <div class="col-md-7">
 
               {% if is_fac %}
-            <!-- Post Create Box
-              ================================================= -->
-            <div class="create-post">
-              <div class="row">
-                <div class="col-md-7 col-sm-7">
-                  <div class="form-group">
-                    <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-md" />
-                    <textarea name="texts" id="exampleTextarea" cols="30" rows="1" class="form-control" placeholder="What do you want to Post"></textarea>
+              <!-- Post Create Box
+                ================================================= -->
+              <div class="create-post">
+                  <form action="/tweet/post/" method="post">
+                <div class="row">
+                  <div class="col-md-7 col-sm-7">
+                    <div class="form-group">
+                      <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-md" />
+                      <textarea name="texts" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-5 col-sm-5">
+                    <div class="tools">
+                      <ul class="publishing-tools list-inline">
+                        <li>
+                          <a href="#">
+                            <i class="ion-images"></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <i class="ion-ios-videocam"></i>
+                          </a>
+                        </li>
+                      </ul>
+                      <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish"/>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-5 col-sm-5">
-                  <div class="tools">
-                    <ul class="publishing-tools list-inline">
-                      <li>
-                        <a href="#">
-                          <i class="ion-images"></i>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="ion-ios-videocam"></i>
-                        </a>
-                      </li>
-                    </ul>
-                    <button class="btn btn-primary pull-right">Publish</button>
-                  </div>
-                </div>
+              </form>
               </div>
-            </div>
-            <!-- Post Create Box End-->
-            {% endif %}
+              <!-- Post Create Box End-->
+              {% endif %}
             <!-- Post Content
               ================================================= -->
             {% for post in posts %}
@@ -178,10 +180,11 @@
                   </div>
                   {% endfor %}
                   {% if sele or is_fac %}
-                    <div class="post-comment">
+                  <form action="./" method="post">
                     <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-sm" />
-                    <input type="text" class="form-control" placeholder="Post a comment">
-                  </div>
+                    <input type="text" class="form-control" placeholder="Ask a Doubt">
+                    <input type="submit" class="form-control" value="Ask">
+                  </form>
                   {% endif %}
                 </div>
               </div>

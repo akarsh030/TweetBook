@@ -13,6 +13,7 @@ from django.template import loader
 from django.shortcuts import *
 from django.utils.decorators import method_decorator
 from authentication.models import Account
+from .forms import *
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -65,196 +66,29 @@ class timeline(APIView):
         }
         return HttpResponse(rsh.render(cont, request))
 
-
-class itemtodo(APIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (JSONWebTokenAuthentication,)
-
-    def get_object(self,request, pk):
-        try:
-            return ToDoItem.objects.filter(list=pk)
-        except ToDoItem.DoesNotExist:
-            raise Http404
-
-    @method_decorator(csrf_exempt)
-    def get(self,request,pk):
-        if request.is_ajax():
-            ak=ToDoList.objects.filter(user=request.user.id).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                aka=self.get_object(request,pk)
-                serializer=ToDoItemSerializer(aka,many=True)
-                return JsonResponse(serializer.data, safe=False)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect('/accounts/login/')
-
-
-class itemnew(APIView):
+class postview(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
 
     @method_decorator(csrf_exempt)
-    def post(self, request, pk):
-        if request.is_ajax():
-            ak=ToDoList.objects.filter(user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if(pk in ak):
-                if not request.data._mutable:
-                    request.data._mutable = True
-                request.data['list']=pk
-                serializer = ToDoItemSerializer(data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return JsonResponse(serializer.data, safe=False)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
+    def post(self,request):
+        if not request.data._mutable:
+            request.data._mutable = True
+        request.data['user']=request.user.id
+        ins=posts(request.POST)
+        ins.save()
+        return redirect('/tweet/home/')
 
-class listupdate(APIView):
+class commview(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
 
-    def get_object(self,request, pk):
-        try:
-            return ToDoList.objects.get(pk=pk)
-        except ToDoList.DoesNotExist:
-            return Response(ToDoList.DoesNotExist, status=status.HTTP_400_BAD_REQUEST)
-
     @method_decorator(csrf_exempt)
-    def get(self,request,pk):
-        if request.is_ajax():
-            ak = ToDoList.objects.filter(user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                aka=self.get_object(request,pk)
-                serializer = ToDoListSerializer(aka)
-                return JsonResponse(serializer.data, safe=False)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-    @method_decorator(csrf_exempt)
-    def put(self,request,pk):
-        if request.is_ajax():
-            ak = ToDoList.objects.filter(user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                ala=self.get_object(request,pk)
-                if not request.data._mutable:
-                    request.data._mutable = True
-                #request.data.update({'user':request.user})
-                request.data['user']=request.user.id
-                serializer = ToDoListSerializer(ala, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return JsonResponse(serializer.data, safe=False)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-    @method_decorator(csrf_exempt)
-    def delete(self,request,pk):
-        if request.is_ajax():
-            ak = ToDoList.objects.filter(user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                aka=self.get_object(request,pk)
-                aka.delete()
-                return JsonResponse({"delete": True}, safe=False)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-class itemupdate(APIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (JSONWebTokenAuthentication,)
-
-    def get_object(self,request, pk):
-        try:
-            return ToDoItem.objects.get(pk=pk)
-        except ToDoItem.DoesNotExist:
-            raise Http404
-
-    @method_decorator(csrf_exempt)
-    def get(self,request, pk):
-        if request.is_ajax():
-            ak = ToDoItem.objects.filter(list__user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                aka = self.get_object(request,pk)
-                serializer = ToDoItemSerializer(aka)
-                return JsonResponse(serializer.data,safe=False)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-    @method_decorator(csrf_exempt)
-    def put(self, request, pk):
-        if request.is_ajax():
-            ak = ToDoItem.objects.filter(list__user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                ala = self.get_object(request,pk)
-                serializer = ToDoItemSerializer(ala, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return JsonResponse(serializer.data, safe=False)
-                print serializer.errors
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-    @method_decorator(csrf_exempt)
-    def delete(self,request,pk):
-        if request.is_ajax():
-            ak = ToDoItem.objects.filter(list__user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                ala = self.get_object(request,pk)
-                ala.delete()
-                return JsonResponse({"delete":True}, safe=False)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
-
-class itemupd(APIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (JSONWebTokenAuthentication,)
-
-    def get_object(self,request, pk):
-        try:
-            return ToDoItem.objects.get(pk=pk)
-        except ToDoItem.DoesNotExist:
-            raise Http404
-
-    @method_decorator(csrf_exempt)
-    def get(self,request, pk):
-        if request.is_ajax():
-            ak = ToDoItem.objects.filter(list__user=request.user).values('pk')
-            ak = [unicode(d['pk']) for d in ak]
-            if pk in ak:
-                aka = self.get_object(request,pk)
-                serializer = ToDoItemSerializer(aka)
-                ser_data=serializer.data
-                ser_data['completed']=True
-                serializer = ToDoItemSerializer(aka, data=ser_data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return JsonResponse(serializer.data, safe=False)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'access':'access denied'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect("/accounts/login/")
+    def post(self,request,pk):
+        if not request.data._mutable:
+            request.data._mutable = True
+        request.data['user']=request.user.id
+        request.data['post'] = pk
+        ins=comments(request.POST)
+        ins.save()
+        return redirect('/tweet/home/')
