@@ -45,7 +45,7 @@ class Account(AbstractBaseUser):
     faculty = models.CharField(max_length=6)
     is_faculty=models.BooleanField(default=False)
     dp = models.FileField(upload_to='dps/')
-    phone= models.IntegerField(default=0)
+    phone= models.CharField(max_length=10)
     objects = AccountManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

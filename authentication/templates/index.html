@@ -85,7 +85,7 @@
 							<input name="lastname" type="text" class="form-control" id="lname" placeholder="Enter Last Name" required>
 						</fieldset>
 						<fieldset class="form-group">
-							<input name="phone" type="number" class="form-control" id="phone" placeholder="Enter Phone Number" required>
+							<input name="phone" type="text" class="form-control" id="phone" pattern="[789][0-9]{9}" placeholder="Enter Phone Number" required>
 						</fieldset>
 						<fieldset id="asas" class="form-group">
 							<select name="faculty" id="faculty" class="form-control" onchange="showfield(this.options[this.selectedIndex].value)" required>

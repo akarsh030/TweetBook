@@ -83,7 +83,11 @@
               <div class="profile-info">
                 <img src="/media/{{dp}}" alt="" class="img-responsive profile-photo" />
                 <h3>{{tname}}</h3>
-                <p class="text-muted">{{tis_fac}}</p>
+                {% if not tis_fac %}
+                <p class="text-muted">Student</p>
+                {% else %}
+                <p class="text-muted">Faculty</p>
+                {% endif %}
               </div>
             </div>
             <div class="col-md-9">
@@ -93,7 +97,7 @@
                 </li>
                 {% if sele %}
                 <li>
-                  <a href="/tweet/timeline/editprof">Profile</a>
+                  <a href="/accounts/profile/">Profile</a>
                 </li>
                 {% endif %}
               </ul>
@@ -107,167 +111,170 @@
           <div class="col-md-3"></div>
           <div class="col-md-7">
 
-              {% if is_fac %}
-              <!-- Post Create Box
-                ================================================= -->
+            <!-- Post Create Box
+              ================================================= -->
+            {% if not is_fac %}
+            <div class="create-post" style="visibility:hidden;">
+              {% else %}
               <div class="create-post">
-                  <form action="/tweet/post/" method="post">
-                <div class="row">
-                  <div class="col-md-7 col-sm-7">
-                    <div class="form-group">
-                      <img src="/media/{{dp}}" alt="" class="profile-photo-md" />
-                      <textarea name="texts" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post" required></textarea>
+                {% endif %}
+                <form action="/tweet/post/" method="post" enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-md-7 col-sm-7">
+                      <div class="form-group">
+                        <img src="/media/{{dp}}" alt="" class="profile-photo-md" />
+                        <textarea name="text" id="posttext" cols="30" rows="1" class="form-control" placeholder="What do you want to Post"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                      <div class="tools">
+                        <ul class="publishing-tools list-inline">
+                          <li>
+                            <a href="#" onclick="document.getElementById('image').click(); return false">
+                              <i class="ion-images">
+                              </i>
+                            </a>
+                            <input id="image" name="pmedia" type="file" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
+                          </li>
+                          <li>
+                            <a href="#" onclick="document.getElementById('video').click(); return false">
+                              <i class="ion-ios-videocam"></i>
+                            </a>
+                            <input id="video" type="file" name="pmedia" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
+                          </li>
+                        </ul>
+                        <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish" />
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-5 col-sm-5">
-                      <div class="tools">
-                          <ul class="publishing-tools list-inline">
-                            <li>
-                              <a href="#" onclick="document.getElementById('image').click(); return false">
-                                <i class="ion-images">
-                                </i>
-                              </a>
-                              <input id="image" name="pmedia" type="file" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
-                            </li>
-                            <li>
-                              <a href="#" onclick="document.getElementById('video').click(); return false">
-                                <i class="ion-ios-videocam"></i>
-                              </a>
-                              <input id="video" type="file" name="pmedia" class="ion-images" style="visibility:hidden; width:1px; height:1px;">
-                            </li>
-                          </ul>
-                          <input type="submit" class="btn btn-primary pull-right" id="postaa" value="Publish" />
-                        </div>
-                  </div>
-                </div>
-              </form>
+                </form>
               </div>
               <!-- Post Create Box End-->
-              {% endif %}
-            <!-- Post Content
+              <!-- Post Content
               ================================================= -->
-            {% for post in posts %}
-            <div class="post-content">
+              {% for post in posts %}
+              <div class="post-content">
 
-              <!--Post Date-->
-              <div class="post-date hidden-xs hidden-sm">
-                <h5>{{tuser}}</h5>
-                <p class="text-grey">Sometimes ago</p>
-              </div>
-              <!--Post Date End-->
-
-              <img src="/media/{{post.pmedia}}" alt="post-image" class="img-responsive post-image" />
-              <div class="post-container">
-                <img src="/media/{{post.user__dp}}" alt="user" class="profile-photo-md pull-left" />
-                <div class="post-detail">
-                  <div class="user-info">
-                    <h5>
-                      <a href="/home/timeline/{{post.user__id}}/" class="profile-link">{{post.user__username}}</a>
-                    </h5>
+                <!--Post Date-->
+                <div class="post-date hidden-xs hidden-sm">
+                  <h5>{{tname}}</h5>
+                  <p class="text-grey">Sometimes ago</p>
+                </div>
+                <!--Post Date End-->
+                {% if post.mtype == 'jpg' or post.mtype == 'jpeg' or post.mtype == 'png' or post.mtype == 'gif' %}
+                <img src="/media/{{post.pmedia}}" alt="post-image" class="img-responsive post-image" /> {% else %}
+                <video class="post-video" controls>
+                  <source src="/media/{{post.pmedia}}" type="video/mp4"> </video>
+                {% endif %}
+                <div class="post-container">
+                  <img src="/media/{{post.user__dp}}" alt="user" class="profile-photo-md pull-left" />
+                  <div class="post-detail">
+                    <div class="user-info">
+                      <h5>
+                        <a href="/home/timeline/{{post.user__id}}/" class="profile-link">{{post.user__username}}</a>
+                      </h5>
+                    </div>
+                    <div class="line-divider"></div>
+                    <div class="post-text">
+                      <p>{{post.text}}
+                      </p>
+                    </div>
+                    <div class="line-divider"></div>
+                    {% for comm in post.comment %}
+                    <div class="post-comment">
+                      <img src="/media/{{comm.user__dp}}" alt="" class="profile-photo-sm" />
+                      <p>
+                        <a href="/home/timeline/{{comm.user__id}}/" class="profile-link">{{comm.user__username}} </a>
+                        {{comm.text}}</p>
+                    </div>
+                    {% endfor %} {% if sele or is_fac %}
+                    <div class="post-comment">
+                      <form action="/tweet/comment/{{post.id}}" method="post">
+                        <img src="/media/{{dp}}" alt="" class="profile-photo-sm" />
+                        <input type="text" name="text" class="form-control" placeholder="Ask a Doubt">
+                        <input type="submit" class="form-control" value="Ask">
+                      </form>
+                    </div>
+                    {% endif %}
                   </div>
-                  <div class="line-divider"></div>
-                  <div class="post-text">
-                    <p>{{post.text}}
-                      <i class="em em-anguished"></i>
-                      <i class="em em-anguished"></i>
-                      <i class="em em-anguished"></i>
-                    </p>
-                  </div>
-                  <div class="line-divider"></div>
-                  {% for comm in post.comment %}
-                  <div class="post-comment">
-                    <img src="{% static 'images/users/{{comm.user__id}}.jpg' %}" alt="" class="profile-photo-sm" />
-                    <p>
-                      <a href="/home/timeline/{{comm.user__id}}/" class="profile-link">{{comm.user__username}} </a>
-                      <i class="em em-laughing"></i>{{comm.text}}</p>
-                  </div>
-                  {% endfor %}
-                  {% if sele or is_fac %}
-                  <form action="./" method="post">
-                    <img src="{% static 'images/users/{{user}}.jpg' %}" alt="" class="profile-photo-sm" />
-                    <input type="text" class="form-control" placeholder="Ask a Doubt">
-                    <input type="submit" class="form-control" value="Ask">
-                  </form>
-                  {% endif %}
                 </div>
               </div>
+              {% endfor %}
+
             </div>
-            {% endfor %}
-
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Footer
+    <!-- Footer
     ================================================= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="row">
-        <div class="footer-wrapper">
-          <div class="col-md-6 col-sm-6">
-            <a href="">
-              <img src="{% static 'images/logo.png' %}" alt="" class="footer-logo" />
-            </a>
-            <ul class="list-inline social-icons">
-              <li>
-                <a href="#">
-                  <i class="icon ion-social-facebook"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="icon ion-social-twitter"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="icon ion-social-googleplus"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="icon ion-social-pinterest"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="icon ion-social-linkedin"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <h6>Contact Us</h6>
-            <ul class="contact">
-              <!-- <li><i class="icon ion-ios-telephone-outline"></i>+1 (234) 222 0754</li> -->
-              <li>
-                <i class="icon ion-ios-email-outline"></i>team1@tweetbook.com</li>
-              <li>
-                <i class="icon ion-ios-location-outline"></i>ANITS, Vizag</li>
-            </ul>
+    <footer id="footer">
+      <div class="container">
+        <div class="row">
+          <div class="footer-wrapper">
+            <div class="col-md-6 col-sm-6">
+              <a href="">
+                <img src="{% static 'images/logo.png' %}" alt="" class="footer-logo" />
+              </a>
+              <ul class="list-inline social-icons">
+                <li>
+                  <a href="#">
+                    <i class="icon ion-social-facebook"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="icon ion-social-twitter"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="icon ion-social-googleplus"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="icon ion-social-pinterest"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="icon ion-social-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <h6>Contact Us</h6>
+              <ul class="contact">
+                <!-- <li><i class="icon ion-ios-telephone-outline"></i>+1 (234) 222 0754</li> -->
+                <li>
+                  <i class="icon ion-ios-email-outline"></i>team1@tweetbook.com</li>
+                <li>
+                  <i class="icon ion-ios-location-outline"></i>ANITS, Vizag</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="copyright">
-      <p>Copyright @TweetBook-Team 2017. All Rights Reserved</p>
-    </div>
-  </footer>
+      <div class="copyright">
+        <p>Copyright @TweetBook-Team 2017. All Rights Reserved</p>
+      </div>
+    </footer>
 
-  <!--preloader-->
-  <div id="spinner-wrapper">
-    <div class="spinner"></div>
-  </div>
+    <!--preloader-->
+    <div id="spinner-wrapper">
+      <div class="spinner"></div>
+    </div>
 
-  <!-- Scripts
+    <!-- Scripts
     ================================================= -->
-  <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/jquery.appear.min.js' %}"></script>
-  <script src="{% static 'js/jquery.incremental-counter.js' %}"></script>
-  <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.appear.min.js' %}"></script>
+    <script src="{% static 'js/jquery.incremental-counter.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 
 </body>
 
