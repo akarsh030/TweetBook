@@ -189,7 +189,8 @@ $("document").ready(function () {
                 });
             },
             error: function (jqXHR) {
-                $("#log-body").prepend('<div class="alert alert-error alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Error!</strong> Wrong Credentials.</div>')
+                $("#logerr").remove()
+                $("#log-body").prepend('<div id="logerr" class="alert alert-error alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Error!</strong> Wrong Credentials.</div>')
             },
             dataType: "json",
             contentType: "application/json",
@@ -209,8 +210,8 @@ $("document").ready(function () {
                 $("#regsucc").modal('show')
             },
             error: function (errors) {
-                $("body").prepend('<div id="regsucc" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-success alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Error!</strong> Already exists.</div></div></div>')
-                $("#regsucc").modal('show')
+                $("body").prepend('<div id="regfail" class="modal fade"><div class="modal-dialog"><div class="modal-content alert alert-error alert-dismissable"><a href="#" class="close" data-dismiss="modal" aria-label="close">×</a><strong>Error!</strong> Already exists.</div></div></div>')
+                $("#regfail").modal('show')
             },
             cache: false,
             contentType: false,

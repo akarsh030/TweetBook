@@ -31,6 +31,13 @@ class AccountSerializer(serializers.ModelSerializer):
         '''
         Ensure the passwords are the same
         '''
+        if 'is_faculty' in data.keys():
+            if data['is_faculty']==False:
+                per=Account.objects.filter(faculty=data['faculty'])
+                if len(per)==0:
+                    raise serializers.ValidationError(
+                        "The Join Code is wrong"
+                    )
         if 'password' in data.keys():
             print "Here"
             if data['password'] != data['confirm_password']:
